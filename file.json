@@ -1,14 +1,10 @@
 {
-  "BaseModel.de495639-5e5e-444d-97d1-7fe301d5b9ac": {
-    "updated_at": "2021-02-13T13:52:05.344441",
-    "id": "de495639-5e5e-444d-97d1-7fe301d5b9ac",
+  "BaseModel.a9de0c41-9c33-4b02-aa5f-bba5fb84a82e": {
+    "created_at": "2021-02-13T22:51:37.551293",
+    "my_number": 89,
+    "name": "Holberton",
     "__class__": "BaseModel",
-    "created_at": "2021-02-13T13:52:05.344407"
-  },
-  "BaseModel.197a8a5c-2298-4802-b407-1373c732fee2": {
-    "id": "197a8a5c-2298-4802-b407-1373c732fee2",
-    "updated_at": "2021-02-13T13:51:27.672022",
-    "__class__": "BaseModel",
-    "created_at": "2021-02-13T13:51:27.672007"
+    "id": "a9de0c41-9c33-4b02-aa5f-bba5fb84a82e",
+    "updated_at": "2021-02-13T22:51:37.551325"
   }
 }

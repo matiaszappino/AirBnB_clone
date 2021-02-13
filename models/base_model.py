@@ -12,20 +12,22 @@ class BaseModel():
 
     def __init__(self, *args, **kwargs):
         """Initialization function"""
-        self.id = str(uuid4())
-        self.created_at = datetime.today().isoformat()
-        self.updated_at = datetime.today().isoformat()
         time_format = "%Y-%m-%dT%H:%M:%S.%f"
-        if kwargs is not None:
+        if len(kwargs) != 0:
             for key, value in kwargs.items():
                 if key == "__class__":
                     continue
                 if key == "created_at" or key == "updated_at":
                     current = datetime.strptime(value, time_format)
-                    self.__dict__[key] = current
-                    continue
-                self.__dict__[key] = value
-        storage.new(self)
+                    setattr(self, key, current)
+                else:
+                    setattr(self, key, value)
+                   # self.__dict__[key] = value
+        else:
+            self.id = str(uuid4())
+            self.created_at = datetime.today().isoformat()
+            self.updated_at = datetime.today().isoformat()
+            storage.new(self)
             
     def __str__(self):
         """Method that returns ..."""
