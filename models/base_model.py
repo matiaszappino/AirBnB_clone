@@ -25,8 +25,7 @@ class BaseModel():
                     self.__dict__[key] = current
                     continue
                 self.__dict__[key] = value
-        else:
-            storage.new(self)
+        storage.new(self)
             
     def __str__(self):
         """Method that returns ..."""
