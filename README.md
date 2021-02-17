@@ -17,11 +17,23 @@ All code is written in accordance with Pep8 https://www.python.org/dev/peps/pep-
 * Type either `EOF` or `quit`
 ### Command usage of Console:
 * `help`
+  * Usage: `help`
+  * Documentation/help provided
 * `create`
+  * Usage: `create BaseModel`
+  * Creates a new instance of a class, saves it (to the JSON file) and prints the `id`
 * `show`
+  * Usage: `show BaseModel 1234-5847-3912`
+  * Prints the string representation of an instance based on the class name and `id`
 * `destroy`
+  * Usage: `destroy BaseModel 1234-5847-3912`
+  * Deletes an instance based on the class name and `id` (save the change into the JSON file). 
 * `all`
+  * Usage: `all`
+  * Prints all string representation of all instances based or not on the class name.
 * `update`
+  * Usage: `update User 1234-5678-9101 email 2109@holbertonschool.com`
+  * Updates an instance based on the class name and id by adding or updating attribute (save the change into the JSON file)
 ### Files
 ### `console.py`
 Module for Main Console
