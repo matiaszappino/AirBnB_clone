@@ -1,9 +1,10 @@
 #!/usr/bin/python3
-"""Class City"""
+"""City class"""
+
 from models.base_model import BaseModel
 
 
 class City(BaseModel):
-    """Class city"""
+    """City class documentation"""
     state_id = ""
     name = ""

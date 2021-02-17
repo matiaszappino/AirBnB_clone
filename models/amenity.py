@@ -1,8 +1,9 @@
 #!/usr/bin/python3
-"""Class Amenity"""
+"""Amenity class"""
+
 from models.base_model import BaseModel
 
 
 class Amenity(BaseModel):
-    """Class Amenity"""
+    """Amenity class documentation"""
     name = ""
