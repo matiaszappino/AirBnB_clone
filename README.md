@@ -86,14 +86,15 @@ Module for serializing and deserializing instances and JSON
   * `def save(self)` : method to serialize __objects to JSON file
   * `def reload(self)` : method to deserialize the JSON to __objects
 ## Test Files : Unit Tests for respectively named files
-### `test_amenity.py`
-### `test_base_model.py`
-### `test_city.py`
-### `test___init__.py`
-### `test_place.py`
-### `test_review.py`
-### `test_state.py`
-### `test_user.py`
+### * [Test Amenity](./tests/models/test_amenity.py)
+### * [Test Base Model](./tests/models/test_base_model.py)
+### * [Test City](./tests/models/test_city.py)
+### * [Test Init](./tests/models/test__init__.py)
+### * [Test Place](./tests/models/test_place.py)
+### * [Test Review](./tests/models/test_review.py)
+### * [Test State](./tests/models/test_state.py)
+### * [Test User](./tests/models/test_user.py)
+
 ## Authors
 * Matias Zappino, <a href='https://github.com/matiaszappino'>Github</a>
 * Flavio Orlando, <a href='https://github.com/flaviomco'>Github</a>
