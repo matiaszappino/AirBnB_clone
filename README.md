@@ -2,8 +2,6 @@
 
 <h1 align ="center"> AIR BNB CLONE </h1><br>
 
-<h1 align ="center"> AIR BNB CLONE </h1><br>
-
 # AirBnb Clone Console
 A Command Interpreter to Manage AirBnb objects.
 
