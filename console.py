@@ -25,42 +25,42 @@ class HBNBCommand(cmd.Cmd):
 
     def do_EOF(self, line):
         """Quit command to exit the program"""
+        print("")
         return True
 
     def emptyline(self):
+        """Do nothing with an empty line"""
         pass
 
     def do_create(self, line):
         """Creates a new instance of BaseModel, saves it (to the JSON file)"""
-        if line is None or line == "":
+        if len(line) == 0 or line == "":
             print("** class name missing **")
         elif line in HBNBCommand.class_list:
-            klass = globals()[line]
+            """klass = globals()[line]
             new_inst = klass()
-            new_inst.save()
-            print(new_inst.id)
+            new_inst.save()"""
+            print(eval(line)().id)
+            storage.save()
         else:
             print("** class doesn't exist **")
 
     def do_show(self, line):
         """Prints the string representation of an instance
         based on the class name and id"""
-        if not line:
+        objs = storage.all()
+        if not line or len(line) == 0:
             print('** class name missing **')
         else:
             arg = line.split()
             if not arg[0] in HBNBCommand.class_list:
-                print('** class doesn\'t exist **')
+                print("** class doesn't exist **")
+            elif len(arg) == 1:
+                print('** instance id missing **')
+            elif (arg[0] + "." + arg[1]) not in objs:
+                print('** no instance found **')
             else:
-                if len(arg) > 1:
-                    class_key = ''
-                    class_key = arg[0] + '.' + arg[1]
-                    if class_key in storage.all():
-                        print(storage.all()[class_key])
-                    else:
-                        print('** no instance found **')
-                else:
-                    print('** instance id missing **')
+                    print(objs[arg[0] + "." + arg[1]])
 
     def do_all(self, line):
         '''
@@ -72,30 +72,31 @@ class HBNBCommand(cmd.Cmd):
         objs = storage.all()
         if len(arg) == 0:
             for val in objs.values():
-                new_list.append(str(val))
+                new_list.append(val.__str__())
             print(new_list)
         elif arg[0] in HBNBCommand.class_list:
             for class_key in objs:
                 if arg[0] in class_key:
-                    new_list.append(str(objs[class_key]).__str__())
+                    new_list.append(objs[class_key].__str__())
             print(new_list)
         else:
-            print('** class doesn\'t exist **')
+            print("** class doesn't exist **")
 
     def do_destroy(self, line):
         """Deletes an instance
         based on the class name and id"""
         objs = storage.all()
-        if line != "":
+        if line != "" or len(line) != 0:
             args = line.split()
             if args[0] not in HBNBCommand.class_list:
                 print("** class doesn't exist **")
-            if len(args) == 1:
+            elif len(args) == 1:
                 print("** instance id missing **")
-            if len(args) == 2:
+            elif len(args) == 2:
                 key = args[0] + "." + args[1]
                 if key in objs:
-                    objs.pop(key)
+                    del objs[key]
+                    storage.save()
                 else:
                     print("** no instance found **")
         else:
@@ -105,20 +106,22 @@ class HBNBCommand(cmd.Cmd):
         """updates an instance based on the class name and id"""
         objs = storage.all()
         scape = ["\"", "\'"]
-        if line != "":
+        if line != "" or len(line) != 0:
             args = line.split()
             if args[0] not in HBNBCommand.class_list:
                 print("** class doesn't exist **")
+                return False
             if len(args) == 1:
                 print("** instance id missing **")
+                return False
+            if "{}.{}".format(args[0], args[1]) not in objs.keys():
+                print("** no instance found **")
+                return False
             if len(args) == 2:
-                key = args[0] + "." + args[1]
-                if key in objs:
-                    print("** attribute name missing **")
-                else:
-                    print("** no instance found **")
+                print("** attribute name missing **")
             if len(args) == 3:
                 print("** value missing **")
+                return False
             if len(args) >= 4:
                 key = args[0] + "." + args[1]
                 if key in objs:
@@ -128,10 +131,9 @@ class HBNBCommand(cmd.Cmd):
                         else:
                             setattr(objs[key], args[2], str(args[3]))
                         storage.save()
-                    else:
-                        print("No se puede editar")
                 else:
                     print("** no instance found **")
+                    return False
         else:
             print("** class name missing **")
 
@@ -147,22 +149,39 @@ class HBNBCommand(cmd.Cmd):
 
     def default(self, line):
         """In case to not found the command this func is executed"""
-        functions = {"all()": HBNBCommand.do_all, "count()": HBNBCommand.count}
+        functions = {"all": HBNBCommand.do_all, "count": HBNBCommand.count}
+        functions_parameters = {"show": HBNBCommand.do_show,
+                                "destroy": HBNBCommand.do_destroy}
         try:
             args = line.split(".")
-            func = ""
+            name_func = ""
             func_id = ""
             for index, letter in enumerate(args[1]):
                 if letter == "(":
-                    func = args[1][0:index] + "()"
-                    func_id = args[1][index + 2: -2]
+                    name_func = args[1][0:index]
                     break
-            if func in functions:
-                functions[func](self, args[0])
+            if name_func in functions:
+                functions[name_func](self, args[0])
+            elif name_func in functions_parameters:
+                line = args[0] + " " + args[1][index + 2:-2]
+                functions_parameters[name_func](self, line)
+            elif name_func == "update":
+                parse = ""
+                line = args[1][index + 1:-1]
+                for letter in line:
+                    if letter != '"' and letter != "'":
+                        parse += letter
+                parse = parse.split(",")
+                line = args[0] + " "
+                for elem in parse:
+                    elem.strip(" ")
+                    line += elem + " "
+                HBNBCommand.do_update(self, line)
             else:
                 print("*** Unknown syntax: {}".format(line))
         except:
             print("*** Unknown syntax: {}".format(line))
+
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()

@@ -1,23 +1,23 @@
 #!/usr/bin/python3
 """Tests File"""
 import unittest
-from models.review import Review
-from models.base_model import BaseModel
-import pep8
-from datetime import datetime
 import models
+from models.user import User
+from models.base_model import BaseModel
+from datetime import datetime
+import pep8
 
 
-class TestReview(unittest.TestCase):
-    """Test of Review class"""
+class TestUser(unittest.TestCase):
+    """Test of User class"""
 
-    def test_Review(self):
-        """Test instance of amenity class"""
-        new = Review()
-        new2 = Review()
+    def test_User(self):
+        """Test instance of User class"""
+        new = User()
+        new2 = User()
         self.assertIsInstance(new, BaseModel)
         self.assertEqual(issubclass(new.__class__, BaseModel), True)
-        self.assertIs(type(new), Review)
+        self.assertIs(type(new), User)
         self.assertTrue(hasattr(new, "id"))
         self.assertNotEqual(new, new2)
         self.assertNotEqual(new.id, new2.id)
@@ -25,63 +25,60 @@ class TestReview(unittest.TestCase):
                                         (new.__class__.__name__,
                                          new.id, new.__dict__))
         self.assertEqual(type(new.id), str)
-        self.assertEqual(Review, type(Review()))
+        self.assertIn(User(), models.storage.all().values())
+        self.assertEqual(User, type(User()))
+        self.assertEqual(str, type(User().id))
+        self.assertEqual(datetime, type(User().created_at))
+        self.assertEqual(datetime, type(User().updated_at))
+        self.assertEqual(str, type(User.email))
+        self.assertEqual(str, type(User.password))
+        self.assertEqual(str, type(User.first_name))
 
-    def test_Review_init(self):
+    def test_User_init(self):
         """Test Init with Kwargs"""
-        new = Review(id="123", created_at="2021-02-17T22:46:38.883036",
+        new = User(id="123", created_at="2021-02-17T22:46:38.883036",
                         updated_at="2021-02-17T22:46:38.883036")
-        new2 = Review(id="123", name="Matias tu papi")
+        new2 = User(name="Matias tu papi")
+        self.assertFalse(hasattr(new2, "id"))
         self.assertFalse(hasattr(new2, "created_at"))
+        self.assertFalse(hasattr(new2, "updated_at"))
         self.assertTrue(hasattr(new2, "name"))
         self.assertEqual(new.id, "123")
         with self.assertRaises(TypeError):
-            Review(id=None, created_at=None, updated_at=None)
+            User(id=None, created_at=None, updated_at=None)
+        new3 = User(1234)
+        self.assertEqual(type(new3).__name__, "User")
+        self.assertFalse(hasattr(new3, "1234"))
 
-
-    def test_public_attr(self):
-        """Test if the attributes are publics"""
-        self.assertEqual(str, type(Review().id))
-        self.assertEqual(datetime, type(Review().created_at))
-        self.assertEqual(datetime, type(Review().updated_at))
-        self.assertEqual(str, type(Review.place_id))
-        self.assertEqual(str, type(Review.user_id))
-        self.assertEqual(str, type(Review.text))
-
+    
     def test_attr(self):
-        new = Review()
+        """Test attributes"""
+        new = User()
         self.assertTrue(hasattr(new, "id"))
         self.assertTrue(hasattr(new, "created_at"))
         self.assertTrue(hasattr(new, "updated_at"))
-        self.assertTrue(hasattr(new, "place_id"))
-        self.assertTrue(hasattr(new, "user_id"))
-        self.assertTrue(hasattr(new, "text"))
-        self.assertNotEqual(type(new.place_id), int)
-        self.assertNotEqual(type(new.place_id), list)
-        self.assertEqual(type(new.place_id), str)
-        self.assertNotEqual(type(new.user_id), list)
-        self.assertNotEqual(type(new.user_id), int)
-        self.assertEqual(type(new.user_id), str)
-        self.assertNotEqual(type(new.text), list)
-        self.assertNotEqual(type(new.text), int)
-        self.assertEqual(type(new.text), str)
+        self.assertTrue(hasattr(new, "email"))
+        self.assertEqual(type(new.email), str)
+        self.assertNotEqual(type(new.email), int)
+        self.assertNotEqual(type(new.email), list)
 
     def test_documentation(self):
         """Check documentation"""
-        self.assertIsNotNone(Review.__doc__)
-        self.assertIsNotNone(Review.__init__.__doc__)
-        self.assertIsNotNone(Review.save.__doc__)
-        self.assertIsNotNone(Review.to_dict.__doc__)
+        self.assertIsNotNone(User.__doc__)
+        self.assertIsNotNone(User.__init__.__doc__)
+        self.assertIsNotNone(User.__str__.__doc__)
+        self.assertIsNotNone(User.save.__doc__)
+        self.assertIsNotNone(User.to_dict.__doc__)
 
     def test_pep8(self):
         """test pep8 comes back clean"""
         style = pep8.StyleGuide(quiet=True)
-        result = style.check_files(['models/review.py'])
+        result = style.check_files(['models/user.py'])
         self.assertEqual(result.total_errors, 0, "pep8")
 
     def test_method_str(self):
         """Test method str"""
-        new = Review()
+        new = User()
         self.assertEqual(new.__str__(), "[{}] ({}) {}".format
                                         (new.__class__.__name__,
                                          new.id, new.__dict__))
@@ -89,16 +86,16 @@ class TestReview(unittest.TestCase):
         self.assertTrue(len(new.__str__()))
 
     def test_to_dict(self):
-        new = Review()
+        new = User()
         dict_new = new.to_dict()
         self.assertNotEqual(new.__dict__, new.to_dict())
         self.assertEqual(type(dict_new["created_at"]), str)
         self.assertEqual(type(dict_new["updated_at"]), str)
         self.assertTrue("__class__" in dict_new)
-        self.assertEqual(dict_new["__class__"],  "Review")
+        self.assertEqual(dict_new["__class__"],  "User")
 
     def test_save(self):
-        new = Review()
+        new = User()
         created = new.updated_at
         new.save()
         updated = new.updated_at
