@@ -30,7 +30,7 @@ class TestAmenity(unittest.TestCase):
     def test_Amenity_init(self):
         new = Amenity(id="123", created_at="2021-02-17T22:46:38.883036",
                         updated_at="2021-02-17T22:46:38.883036")
-        new2 = Amenity(id="123", name="Matias tu papi")
+        new2 = Amenity(id="123", name="Zappi")
         self.assertFalse(hasattr(new2, "created_at"))
         self.assertTrue(hasattr(new2, "name"))
         self.assertEqual(new.id, "123")
