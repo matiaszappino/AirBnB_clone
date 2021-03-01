@@ -95,7 +95,6 @@ ul {
 
 .amenities:hover .popover{
     visibility: visible;
-
 }
 .locations:hover .popover{
     visibility: visible;
